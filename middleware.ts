@@ -30,6 +30,10 @@ export default auth((req) => {
     return Response.redirect(new URL("/home", nextUrl));
   }
 
+  if (nextUrl.pathname.startsWith("/home") && (req.auth?.user as any)?.role !== "user") {
+    return Response.redirect(new URL("/admin", nextUrl));
+  }
+
   return; 
 });
 

@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import Link from "next/link";
 
 export function JobUserCard({ job }: { job: any }) {
   return (
@@ -23,12 +24,12 @@ export function JobUserCard({ job }: { job: any }) {
       /> */}
       <CardHeader className="flex flex-col">
         <div className="flex items-center justify-between w-full">
-        <CardTitle>{job.title}</CardTitle>
-        <CardAction>
-          <Badge variant="secondary" className="text-sm">
-            {job.location}
-          </Badge>
-        </CardAction>
+          <CardTitle>{job.title}</CardTitle>
+          <CardAction>
+            <Badge variant="secondary" className="text-sm">
+              {job.location}
+            </Badge>
+          </CardAction>
         </div>
         <CardDescription className="text-md text-foreground">
           {job.salary}
@@ -40,7 +41,11 @@ export function JobUserCard({ job }: { job: any }) {
         </p>
       </CardContent>
       <CardFooter>
-        <Button className="w-full">View Details</Button>
+        <Link className="w-full" href={`/home/apply/${job.id}`}>
+          <Button className="w-full">
+            View Details
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

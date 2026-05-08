@@ -26,12 +26,6 @@ export async function ApplicationCard({ application }: { application: any }) {
 
     if (!job) return null;
 
-    await connectMongo();
-    const aiFeedback = await Analysis.findOne({
-      applicationId: Number(application.id),
-    });
-    if (!aiFeedback) return null;
-
     return (
       <Card className="w-full pt-6">
         {/* <div className="absolute inset-0 z-30 aspect-video bg-black/35" />
@@ -55,16 +49,22 @@ export async function ApplicationCard({ application }: { application: any }) {
         </CardHeader>
         <CardContent>
           <p className="line-clamp-4 text-sm text-muted-foreground mb-4">
-            {aiFeedback.aiFeedback.decisionSummary}
+            {/* {aiFeedback.aiFeedback.decisionSummary} */}
           </p>
           <p className="text-muted-foreground text-sm">
             Applied: {new Date(application.createdAt).toDateString()}
           </p>
         </CardContent>
         <CardFooter>
-          <Link className="w-full" href={`/home/apply/${job.id}`}>
-            <Button className="w-full">View Details</Button>
-          </Link>
+          {/* <Button asChild variant="default" className="mt-2">
+            <a
+              href={application.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open CV
+            </a>
+          </Button> */}
         </CardFooter>
       </Card>
     );

@@ -1,7 +1,7 @@
 import mongoose, { Schema, model, models } from "mongoose";
 
 const AnalysisSchema = new Schema({
-  applicationId: { type: Number, required: true },
+  applicationId: { type: Number, required: true, unique: true, index: true },
   cvUrl: String,
   cvText: String,
   aiFeedback: {

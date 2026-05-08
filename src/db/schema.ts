@@ -13,6 +13,7 @@ export const users = sqliteTable("users", {
 // jobs table
 export const jobs = sqliteTable("jobs", {
   id: integer("id").primaryKey({ autoIncrement: true }),
+  ownerId: integer("owner_id").references(() => users.id),
   title: text("title").notNull(),
   companyName: text("company_name").notNull(),
   description: text("description").notNull(),
@@ -22,6 +23,7 @@ export const jobs = sqliteTable("jobs", {
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
     () => new Date(),
   ),
+  deletedAt: integer("deleted_at", { mode: "timestamp" })
 });
 
 // applications table
@@ -29,6 +31,7 @@ export const applications = sqliteTable("applications", {
   id: integer("id").primaryKey({ autoIncrement: true }),
   userId: integer("user_id").references(() => users.id),
   jobId: integer("job_id").references(() => jobs.id),
+  cvUrl: text("cv_url"),
   status: text("status")
     .$type<"Under Review" | "Accepted" | "Rejected">()
     .default("Under Review"),
@@ -36,4 +39,5 @@ export const applications = sqliteTable("applications", {
   createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
     () => new Date(),
   ),
+  deletedAt: integer("deleted_at", { mode: "timestamp" }),
 });

@@ -25,11 +25,12 @@ export const applyForJobAction = async (prevState: any, formData: FormData) => {
   console.log("⛔️ Full Session User:", session?.user);
   const user = session?.user;
   console.log("⛔️ Check this ID:", session?.user?.id);
-  if (!user || !user.id) {
+  if (!user || !user.id || !user.name) {
     return { error: "You must be logged in to apply for a job" };
   }
   const userIdRaw = user?.id;
   const userId = Number(userIdRaw);
+  const userName = user?.name;
 
   if (!userIdRaw || isNaN(userId)) {
     console.error("⛔️ Error: User ID is missing or invalid. ID:", userIdRaw);
@@ -44,10 +45,18 @@ export const applyForJobAction = async (prevState: any, formData: FormData) => {
 
   const bytes = await file.arrayBuffer();
   const buffer = Buffer.from(bytes);
-  // Save CV as pdf on cloudinary
+
+  //* Save CV as pdf on cloudinary
   const result = await new Promise((resolve, reject) => {
     cloudinary.uploader.upload_stream(
-      { resource_type: "raw", folder: "resumes" },
+      {
+        resource_type: "raw",
+        folder: "resumes",
+        public_id: `cv_${userName.replace(/\s+/g, '_')}`,
+        format: "pdf",
+        type: "upload",
+        access_mode: "public"
+      },
       (error: any, result: any) => {
         if (error) reject(error);
         resolve(result);

@@ -21,10 +21,11 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { handleSignOut } from "@/lib/actions/auth";
 
 const menuItems = [
-  { title: "Dashboard", url: "/", icon: LayoutDashboard },
-  { title: "Jobs", url: "/admin", icon: Briefcase },
+  { title: "Dashboard", url: "/admin", icon: LayoutDashboard },
+  { title: "Jobs", url: "/admin/jobs", icon: Briefcase },
   { title: "Applications", url: "/admin/applications", icon: Users },
 ];
 
@@ -42,7 +43,7 @@ export function AdminSidebar() {
               {menuItems.map((item) => {
                 const isActive = pathname === item.url;
                 return (
-                  <SidebarMenuItem key={item.title}>                    
+                  <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
                       isActive={isActive}
@@ -70,10 +71,15 @@ export function AdminSidebar() {
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton className="text-destructive" disabled>
-              <LogOut className="size-5" />
-              <span>Logout</span>
-            </SidebarMenuButton>
+            <form action={handleSignOut} className="w-full">
+              <SidebarMenuButton
+                className="text-destructive"
+                type="submit"
+              >
+                <LogOut className="size-5" />
+                <span>Logout</span>
+              </SidebarMenuButton>
+            </form>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarFooter>

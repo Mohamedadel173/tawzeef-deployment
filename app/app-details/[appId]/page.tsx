@@ -1,5 +1,5 @@
 import { db } from "@/src/db";
-import { jobs, applications } from "@/src/db/schema";
+import { jobs, applications, users } from "@/src/db/schema";
 import { eq } from "drizzle-orm";
 import Analysis from "@/src/models/Analysis";
 import connectMongo from "@/src/lib/mongodb";
@@ -31,6 +31,16 @@ export default async function ApplicationDetailsPage({
     .where(eq(jobs.id, Number(application.jobId)))
     .get();
 
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, Number(application.userId)))
+    .get();
+
+  if (!user) {
+    return <div>Error</div>;
+  }
+
   return (
     <div className="p-8 flex flex-col items-center">
       {/* nav bar */}
@@ -47,31 +57,11 @@ export default async function ApplicationDetailsPage({
         />
       </div>
 
-      <Tabs defaultValue="job" className="w-full">
+      <Tabs defaultValue="analysis" className="w-full">
         <TabsList>
-          <TabsTrigger value="job">Job Details</TabsTrigger>
           <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
+          <TabsTrigger value="job">Job Details</TabsTrigger>
         </TabsList>
-
-        {/* Job Details Tab */}
-        <TabsContent value="job" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-2xl">{job?.title}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <p className="font-semibold text-lg text-primary">
-                {job?.companyName}
-              </p>
-              <Badge variant="secondary">{job?.location}</Badge>
-              <p className="mt-4 text-muted-foreground">{job?.description}</p>
-              <div className="pt-4 border-t">
-                <h4 className="font-bold">Requirements:</h4>
-                <p className="text-sm">{job?.requirements}</p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
 
         {/* AI Analysis Tab */}
         <TabsContent value="analysis">
@@ -111,16 +101,42 @@ export default async function ApplicationDetailsPage({
             <p>No AI analysis found for this application.</p>
           )}
         </TabsContent>
+
+        {/* Job Details Tab */}
+        <TabsContent value="job" className="space-y-4">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">{job?.title}</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <p className="font-semibold text-lg text-primary">
+                {job?.companyName}
+              </p>
+              <Badge variant="secondary">{job?.location}</Badge>
+              <p className="mt-4 text-muted-foreground">{job?.description}</p>
+              <div className="pt-4 border-t">
+                <h4 className="font-bold">Requirements:</h4>
+                <p className="text-sm">{job?.requirements}</p>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
       </Tabs>
 
       {/* Download CV */}
-      <div className="w-full">
-        <Button asChild variant="default" className="mt-2">
-          <a href={aiFeedback.cvUrl} target="_blank" download>
-            Download CV
-          </a>
-        </Button>
-      </div>
+      {aiFeedback?.cvUrl && (
+        <div className="w-full">
+          <Button asChild variant="default" className="mt-2">
+            <a
+              href={aiFeedback.cvUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open CV
+            </a>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }

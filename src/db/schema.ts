@@ -1,4 +1,5 @@
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { table } from "console";
+import { sqliteTable, text, integer, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // users table
 export const users = sqliteTable("users", {
@@ -40,4 +41,6 @@ export const applications = sqliteTable("applications", {
     () => new Date(),
   ),
   deletedAt: integer("deleted_at", { mode: "timestamp" }),
-});
+}, (table) => ({
+  unq: uniqueIndex("unique_application").on(table.userId, table.jobId),
+}));

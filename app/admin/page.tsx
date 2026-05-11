@@ -63,7 +63,7 @@ export default async function AdminDashboard() {
   ];
 
   return (
-    <div className="space-y-10 bg-gray-50/30 min-h-screen ">
+    <div className="space-y-10 bg-background min-h-screen ">
       {/* title section */}
       <div className="w-full flex justify-between items-center">
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
       {/* Main Statistics */}
       <section className="space-y-6">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-1 bg-primary rounded-full" />
+          <div className="h-8 w-1 bg-foreground rounded-full" />
           <h2 className="text-xl font-semibold tracking-tight">
             Main Statistics
           </h2>
@@ -96,8 +96,8 @@ export default async function AdminDashboard() {
       {/* Archive Statistics */}
       <section className="space-y-6">
         <div className="flex items-center gap-2">
-          <div className="h-8 w-1 bg-gray-400 rounded-full" />
-          <h2 className="text-xl font-semibold tracking-tight text-gray-600">
+          <div className="h-8 w-1 bg-foreground rounded-full" />
+          <h2 className="text-xl font-semibold tracking-tight text-foreground">
             Archive Statistics
           </h2>
         </div>
@@ -105,18 +105,18 @@ export default async function AdminDashboard() {
           {archiveStats.map((stat) => (
             <Card
               key={stat.title}
-              className="bg-gray-50/50 border-dashed border-2 shadow-none hover:bg-gray-100/50 transition-colors"
+              className="border-dashed border-2 shadow-none bg-secondary-card"
             >
               <CardHeader className="flex flex-row items-center justify-between pb-2">
-                <CardTitle className="text-base font-semibold text-gray-500 uppercase tracking-wider">
+                <CardTitle className="text-base font-semibold text-foreground uppercase tracking-wider">
                   Archive: {stat.title}
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex items-center justify-between w-full">
-                <div className="text-4xl font-semibold text-gray-700">
+                <div className="text-4xl font-semibold text-foreground">
                   {stat.value}
                 </div>
-                <stat.icon className="h-8 w-8 text-gray-500" />
+                <stat.icon className="h-8 w-8 text-foreground" />
               </CardContent>
             </Card>
           ))}

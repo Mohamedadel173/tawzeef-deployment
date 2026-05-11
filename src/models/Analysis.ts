@@ -7,7 +7,8 @@ const AnalysisSchema = new Schema({
   aiFeedback: {
     strengths: [String],
     weaknesses: [String],
-    recommendation: String,
+    status: String,
+    summary: String,
     decisionSummary: String,
     improvementTip: String
   },
